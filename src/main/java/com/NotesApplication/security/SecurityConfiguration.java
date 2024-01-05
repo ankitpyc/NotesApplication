@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -13,15 +14,13 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(request -> {
-            request.requestMatchers(
-                    "/api/user",
-                    "/register*",
-                    "/login",
-                    "/actuator/**").permitAll();
-            request.anyRequest().authenticated();
-        });
+        http
+                .authorizeRequests()
+                .antMatchers("/api/user","/createNotes","/searchNotes").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
         return http.build();
     }
 

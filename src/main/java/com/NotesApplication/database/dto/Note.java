@@ -2,6 +2,7 @@ package com.NotesApplication.database.dto;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.TextScore;
 
 import java.util.Date;
 
@@ -16,6 +17,9 @@ public class Note {
     private String userId;
     private Date createdAt;
     private Date updatedAt;
+
+    @TextScore
+    private Float score;
 
     public String getTitle() {
         return title;

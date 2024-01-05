@@ -1,5 +1,6 @@
 package com.NotesApplication.controller;
 
+import com.NotesApplication.database.dto.MongoMapping;
 import com.NotesApplication.database.dto.Note;
 import com.NotesApplication.database.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class NotesController {
 
     @Autowired
     private NoteRepository noteRepository;
+
+    @Autowired
+    MongoMapping mongoMapping;
 
     @GetMapping("/getNotesbyId")
     public Note getNotesByNoteId(@RequestParam String noteId){
@@ -34,5 +38,11 @@ public class NotesController {
 
         noteRepository.save(note);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/searchNotes")
+    public List<Note> searchNotes(@RequestParam String textSearch){
+
+        return mongoMapping.test(textSearch);
     }
 }

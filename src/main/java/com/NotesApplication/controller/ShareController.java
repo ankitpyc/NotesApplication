@@ -23,7 +23,7 @@ public class ShareController {
     public List<Note> getSharedNotes(@RequestParam String userId){
         List<SharedNotes> sharedNotes = sharingRepository.findBySharedWithUserId(userId);
         List<String> notesId = sharedNotes.stream().map(sharedNotes1 -> sharedNotes1.getNoteId()).collect(Collectors.toList());
-        return noteRepository.findAllById(notesId);
+        return (List<Note>) noteRepository.findAllById(notesId);
     }
 
     @PostMapping("/shareNote")

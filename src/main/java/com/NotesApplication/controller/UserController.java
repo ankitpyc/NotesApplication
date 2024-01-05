@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.security.SecureRandom;
 
 @RestController
@@ -14,12 +15,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @PostMapping("/api/user")
-    public void createUser(@RequestBody User user){
+    public void createUser(@RequestBody User user, HttpSession session){
         int strength = 10; // work factor of bcrypt
         BCryptPasswordEncoder bCryptPasswordEncoder =
                 new BCryptPasswordEncoder(strength, new SecureRandom());
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
+        System.out.println("User session :" + session.getId());
         System.out.println("saving user details");
         userRepository.save(user);
     }

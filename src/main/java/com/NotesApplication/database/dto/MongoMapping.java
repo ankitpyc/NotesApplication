@@ -16,14 +16,12 @@ public class MongoMapping {
     @Autowired
     MongoTemplate mongoTemplate;
 
-    public List<Note> test(String text){
+    public List<Note> queryNotes(String text){
         TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matchingAny(text);
         BasicDBList bsonList = new BasicDBList();
         bsonList.add(textCriteria.getCriteriaObject());
         Query query = new Query();
         query.addCriteria(new Criteria("$or").is(bsonList));
-        System.out.println("query :"+query);
-
         List<Note> note = mongoTemplate.find(query, Note.class);
         return note;
     }

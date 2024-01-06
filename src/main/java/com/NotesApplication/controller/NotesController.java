@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-@RestController
+@RestController("/api/notes")
 public class NotesController {
 
     @Autowired
@@ -21,17 +21,17 @@ public class NotesController {
     MongoMapping mongoMapping;
 
     @GetMapping("/getNotesbyId")
-    public Note getNotesByNoteId(@RequestParam String noteId){
+    public Note getNotesByNoteId(@RequestParam String noteId) {
         return noteRepository.findById(noteId).get();
     }
 
     @GetMapping("/getNotesByUserId")
-    public List<Note> getNoteByUserId(@RequestParam String userId){
+    public List<Note> getNoteByUserId(@RequestParam String userId) {
         return (List<Note>) noteRepository.findByUserId(userId);
     }
 
     @PostMapping("/createNotes")
-    public ResponseEntity<HttpStatus> createNote(@RequestBody Note note){
+    public ResponseEntity<HttpStatus> createNote(@RequestBody Note note) {
         System.out.println("Created notes for :" + note);
         note.setCreatedAt(new Date());
         note.setUpdatedAt(new Date());
@@ -41,8 +41,7 @@ public class NotesController {
     }
 
     @PostMapping("/searchNotes")
-    public List<Note> searchNotes(@RequestParam String textSearch){
-
-        return mongoMapping.test(textSearch);
+    public List<Note> searchNotes(@RequestParam String textSearch) {
+        return mongoMapping.queryNotes(textSearch);
     }
 }

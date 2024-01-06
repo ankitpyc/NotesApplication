@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("/api/share")
 public class ShareController {
 
     @Autowired
@@ -19,14 +19,14 @@ public class ShareController {
     @Autowired
     private NoteRepository noteRepository;
 
-    @GetMapping("/getSharedNotesUser")
+    @GetMapping("/getSharedNotesByUserId")
     public List<Note> getSharedNotes(@RequestParam String userId){
         List<SharedNotes> sharedNotes = sharingRepository.findBySharedWithUserId(userId);
         List<String> notesId = sharedNotes.stream().map(sharedNotes1 -> sharedNotes1.getNoteId()).collect(Collectors.toList());
         return (List<Note>) noteRepository.findAllById(notesId);
     }
 
-    @PostMapping("/shareNote")
+    @PostMapping("/shareNotesToUser")
     public void getSharedNotes(@RequestBody SharedNotes sharedNotes){
          sharingRepository.save(sharedNotes);
     }
